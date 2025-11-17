@@ -1,12 +1,16 @@
-
-const wppconnect = require('@wppconnect-team/wppconnect');
 const express = require('express');
+const wppconnect = require('@wppconnect-team/wppconnect');
+const path = require('path');
 const app = express();
+
 app.use(express.json());
+
+// Statik faylları xidmət etmək üçün
+app.use(express.static(path.join(__dirname, 'public')));
 
 let whatsappClient = null;
 
-wppconnect.create().then((client) => {
+wppconnect.create().then(client => {
     whatsappClient = client;
     console.log("WhatsApp client connected");
 });
@@ -22,4 +26,4 @@ app.post("/send-message", async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log("API running on port 3000"));
+app.listen(process.env.PORT || 3000, () => console.log("API running"));
